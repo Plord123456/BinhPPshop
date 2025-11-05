@@ -23,6 +23,15 @@ router.post("/vnpay/create-payment-url", (req, res) => {
       bankCode,
     } = req.body;
 
+    console.log("📝 VNPAY Payment Request:", {
+      orderId,
+      amount,
+      orderDescription,
+      orderType,
+      locale,
+      bankCode,
+    });
+
     // Validation
     if (!orderId) {
       return res.status(400).json({
@@ -52,6 +61,8 @@ router.post("/vnpay/create-payment-url", (req, res) => {
       req.socket.remoteAddress ||
       req.connection.socket.remoteAddress;
 
+    console.log("🌐 Client IP:", ipAddr);
+
     // Create payment URL
     const paymentUrl = createPaymentUrl({
       orderId,
@@ -63,6 +74,9 @@ router.post("/vnpay/create-payment-url", (req, res) => {
       bankCode: bankCode || "",
     });
 
+    console.log("✅ Payment URL created successfully");
+    console.log("🔗 URL length:", paymentUrl.length);
+
     return res.status(200).json({
       success: true,
       message: "Payment URL created successfully",
@@ -70,7 +84,7 @@ router.post("/vnpay/create-payment-url", (req, res) => {
       orderId,
     });
   } catch (error) {
-    console.error("Error creating VNPAY payment URL:", error);
+    console.error("❌ Error creating VNPAY payment URL:", error);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",

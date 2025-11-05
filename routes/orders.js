@@ -21,7 +21,7 @@ router.get("/:orderId/payment-status", async (req, res) => {
     // Query order from Supabase
     const { data: order, error } = await supabase
       .from("orders")
-      .select("id, payment_status, payment_method, vnpay_transaction_no")
+      .select("id, payment_status")
       .eq("id", orderId)
       .single();
 
@@ -44,8 +44,6 @@ router.get("/:orderId/payment-status", async (req, res) => {
       success: true,
       isPaid: order.payment_status === "paid",
       paymentStatus: order.payment_status,
-      paymentMethod: order.payment_method || null,
-      transactionNo: order.vnpay_transaction_no || null,
     });
   } catch (error) {
     console.error("Error checking payment status:", error);

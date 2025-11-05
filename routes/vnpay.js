@@ -40,6 +40,16 @@ router.post("/vnpay/create-payment-url", (req, res) => {
       });
     }
 
+    // Sanitize orderId: VNPAY requires alphanumeric only (no special chars)
+    // Format: Add timestamp to ensure uniqueness within the day
+    const timestamp = Date.now();
+    const sanitizedOrderId = String(orderId).replace(/[^a-zA-Z0-9]/g, "") + timestamp;
+    
+    console.log("🔧 Sanitized Order ID:", {
+      original: orderId,
+      sanitized: sanitizedOrderId,
+    });
+
     if (!amount || typeof amount !== "number" || amount <= 0) {
       return res.status(400).json({
         success: false,
@@ -53,6 +63,15 @@ router.post("/vnpay/create-payment-url", (req, res) => {
         message: "Order description is required",
       });
     }
+    
+    // Sanitize orderDescription: Remove Vietnamese accents and special chars
+    const sanitizedDescription = orderDescription
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // Remove accents
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D")
+      .replace(/[^a-zA-Z0-9\s]/g, "") // Remove special chars
+      .trim();
 
     // Get client IP address
     const ipAddr =
@@ -63,11 +82,11 @@ router.post("/vnpay/create-payment-url", (req, res) => {
 
     console.log("🌐 Client IP:", ipAddr);
 
-    // Create payment URL
+    // Create payment URL with sanitized data
     const paymentUrl = createPaymentUrl({
-      orderId,
+      orderId: sanitizedOrderId,
       amount,
-      orderDescription,
+      orderDescription: sanitizedDescription,
       orderType: orderType || "other",
       locale: locale || "vn",
       ipAddr,
@@ -81,7 +100,8 @@ router.post("/vnpay/create-payment-url", (req, res) => {
       success: true,
       message: "Payment URL created successfully",
       paymentUrl,
-      orderId,
+      orderId: sanitizedOrderId,
+      originalOrderId: orderId,
     });
   } catch (error) {
     console.error("❌ Error creating VNPAY payment URL:", error);

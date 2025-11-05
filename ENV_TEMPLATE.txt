@@ -1,0 +1,14 @@
+# Stripe Configuration
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+
+# VNPAY Configuration (Sandbox)
+VNP_TMN_CODE=GDC9APG1
+VNP_HASH_SECRET=33J1TXJT0YZA3IHAJKGKSAHJMEXJNXHP
+VNP_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+VNP_RETURN_URL=http://localhost:8000/vnpay/return
+VNP_IPN_URL=http://localhost:8000/vnpay/ipn
+
+# Server Configuration
+PORT=8000
+

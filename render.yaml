@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: payment-gateway
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: PORT
+        generateValue: true
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: VNP_TMN_CODE
+        value: GDC9APG1
+      - key: VNP_HASH_SECRET
+        value: 33J1TXJT0YZA3IHAJKGKSAHJMEXJNXHP
+      - key: VNP_URL
+        value: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+      - key: VNP_RETURN_URL
+        sync: false
+      - key: VNP_IPN_URL
+        sync: false
+

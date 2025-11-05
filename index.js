@@ -4,6 +4,7 @@ import "dotenv/config";
 import Stripe from "stripe";
 import checkout from "./routes/checkout.js";
 import vnpay from "./routes/vnpay.js";
+import orders from "./routes/orders.js";
 
 const app = express();
 app.use(cors());
@@ -13,7 +14,8 @@ app.get("/", (req, res) => {
   res.send("Payment Gateway Server - Stripe & VNPAY");
 });
 app.use("/", checkout);
-app.use("/", vnpay);
+app.use("/vnpay", vnpay);
+app.use("/orders", orders);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

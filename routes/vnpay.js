@@ -12,7 +12,7 @@ const router = Router();
  * Create VNPAY payment URL
  * POST /vnpay/create-payment-url
  */
-router.post("/vnpay/create-payment-url", (req, res) => {
+router.post("/create-payment-url", (req, res) => {
   try {
     const {
       orderId,
@@ -118,7 +118,7 @@ router.post("/vnpay/create-payment-url", (req, res) => {
  * This is called when user completes payment and is redirected back
  * GET /vnpay/return
  */
-router.get("/vnpay/return", (req, res) => {
+router.get("/return", (req, res) => {
   try {
     const vnpParams = req.query;
     const isValid = verifyReturnUrl(vnpParams);
@@ -186,7 +186,7 @@ router.get("/vnpay/return", (req, res) => {
  * This is called by VNPAY server to notify payment status
  * GET /vnpay/ipn
  */
-router.get("/vnpay/ipn", async (req, res) => {
+router.get("/ipn", async (req, res) => {
   try {
     const vnpParams = req.query;
     const verification = verifyIpnCall(vnpParams);
@@ -290,7 +290,7 @@ router.get("/vnpay/ipn", async (req, res) => {
  * Query transaction status
  * POST /vnpay/query-transaction
  */
-router.post("/vnpay/query-transaction", async (req, res) => {
+router.post("/query-transaction", async (req, res) => {
   try {
     const { orderId, transDate } = req.body;
 
@@ -329,7 +329,7 @@ router.post("/vnpay/query-transaction", async (req, res) => {
  * Get supported banks list
  * GET /vnpay/banks
  */
-router.get("/vnpay/banks", (req, res) => {
+router.get("/banks", (req, res) => {
   const banks = [
     { code: "", name: "Cổng thanh toán VNPAYQR" },
     { code: "VNPAYQR", name: "Thanh toán qua ứng dụng hỗ trợ VNPAYQR" },
